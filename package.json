@@ -1,0 +1,21 @@
+{
+  "name": "book-fairy",
+  "packageManager": "yarn@4.0.2",
+  "private": true,
+  "os": [
+    "linux"
+  ],
+  "type": "module",
+  "cpu": [
+    "x64"
+  ],
+  "workspaces": [
+    "prd/*",
+    "lib/*",
+    "dev/*",
+    "tooling"
+  ],
+  "engines": {
+    "node": "22.8.0"
+  }
+}

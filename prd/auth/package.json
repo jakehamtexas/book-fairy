@@ -1,0 +1,9 @@
+{
+  "name": "prd-auth",
+  "scripts": {
+    "build": "yarn tooling:build",
+    "lint": "yarn tooling:lint",
+    "format": "yarn tooling:format",
+    "test": "PROJECT=prd-auth yarn tooling:test"
+  }
+}
