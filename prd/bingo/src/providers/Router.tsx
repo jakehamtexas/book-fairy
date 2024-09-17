@@ -1,5 +1,5 @@
 import { useLocation, createBrowserRouter, type RouteObject, BrowserRouter } from 'react-router-dom';
-import { Layout } from '../layouts/Layout';
+import { Layout } from '../layouts/Mobile';
 import { DownloadTab } from '../pages/DownloadTab';
 import { PreviewTab } from '../pages/PreviewTab';
 import { UploadTab } from '../pages/UploadTab';
