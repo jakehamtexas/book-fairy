@@ -1,0 +1,5 @@
+procs:
+  serve:
+    shell: 'yarn serve'
+  type-check:
+    shell: 'yarn run type-check'

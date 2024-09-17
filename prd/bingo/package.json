@@ -1,0 +1,31 @@
+{
+  "name": "prd-bingo",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "node ./build.mjs build",
+    "type-check": "tsc -p tsconfig.build.json",
+    "mprocs": "yarn tooling:mprocs",
+    "serve": "node ./build.mjs serve",
+    "bundle": "TSCONFIG=tsconfig.build.json OUTDIR=dist yarn tooling:bundle",
+    "test": "PROJECT=prd-bingo yarn tooling:test",
+    "lint": "yarn tooling:lint"
+  },
+  "dependencies": {
+    "@chakra-ui/react": "2.8.2",
+    "@emotion/react": "11.13.3",
+    "@emotion/styled": "11.13.0",
+    "@uidotdev/usehooks": "2.4.1",
+    "framer-motion": "11.5.4",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "react-rnd": "10.4.12",
+    "react-router-dom": "6.26.2"
+  },
+  "devDependencies": {
+    "@types/node": "22.5.4",
+    "@types/react": "18.3.5",
+    "@types/react-dom": "18.3.0",
+    "esbuild": "0.23.1"
+  }
+}

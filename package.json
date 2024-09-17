@@ -1,6 +1,6 @@
 {
   "name": "book-fairy",
-  "packageManager": "yarn@4.0.2",
+  "packageManager": "yarn@4.5.0",
   "private": true,
   "os": [
     "linux"
@@ -17,5 +17,8 @@
   ],
   "engines": {
     "node": "22.8.0"
+  },
+  "scripts": {
+    "mprocs": "yarn tooling:mprocs"
   }
 }

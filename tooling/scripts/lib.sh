@@ -22,6 +22,10 @@ get_init_cwd() {
 	echo "$cwd"
 }
 
+cd_init_cwd() {
+	cd "$(get_init_cwd)" || return 1
+}
+
 get_project_cwd() {
 	local cwd
 	cwd="${PROJECT_CWD:?Must be run in a yarn script}"

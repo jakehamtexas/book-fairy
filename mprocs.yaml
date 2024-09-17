@@ -1,0 +1,5 @@
+procs:
+  prd-bingo-dev:
+    shell: 'yarn workspace prd-bingo run serve'
+  prd-bingo:
+    shell: 'yarn workspace prd-bingo mprocs'
