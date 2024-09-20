@@ -1,5 +1,5 @@
 import { Outlet } from 'react-router-dom';
-import { ArrowNav } from '../components/ArrowNav';
+import { ArrowNavButton } from '../components/ArrowNavButton';
 import { useBackgroundImage } from '../providers/BackgroundImage';
 import styled from '@emotion/styled';
 import { Container } from '@chakra-ui/react';
@@ -18,18 +18,54 @@ const BackgroundImageContainer = styled.div<{ $bgImgUrl: string | undefined }>`
   `}
 `;
 
+const OutletContainer = styled.div`
+  height: 90%;
+`;
+
+const NavBarLayout = styled.nav`
+  display: grid;
+
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr;
+
+  height: 10%;
+
+  opacity: 0.5;
+  background: #000;
+`;
+
+const ButtonContainer = styled(Container)`
+  background: #000;
+  opacity: 1;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const NavBar: React.FC = () => {
+  return (
+    <NavBarLayout>
+      <ButtonContainer>
+        <ArrowNavButton left />
+      </ButtonContainer>
+      <Container />
+      <ButtonContainer>
+        <ArrowNavButton right />
+      </ButtonContainer>
+    </NavBarLayout>
+  );
+};
+
 export const Layout: React.FC = () => {
   const { fileUrl } = useBackgroundImage();
 
   return (
     <BackgroundImageContainer $bgImgUrl={fileUrl}>
-      <Container>
-        <nav>
-          <ArrowNav left />
-          <ArrowNav right />
-        </nav>
+      <OutletContainer>
         <Outlet />
-      </Container>
+      </OutletContainer>
+      <NavBar />
     </BackgroundImageContainer>
   );
 };

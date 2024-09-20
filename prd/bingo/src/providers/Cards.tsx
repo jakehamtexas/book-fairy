@@ -3,8 +3,9 @@ import {
   type BoundingBox,
   type Position,
 } from '../components/DraggableResizable';
-import { createContext, type Dispatch, type PropsWithChildren, type SetStateAction, useContext, useState } from 'react';
+import { createContext, type Dispatch, type PropsWithChildren, type SetStateAction, useContext } from 'react';
 import { calculateScale, ORIGINAL_SIZE } from '../lib/scale';
+import { useClientState } from '../hooks/useClientState';
 
 export const CardsContext = createContext<
   [BingoCardPlacement[], Dispatch<SetStateAction<BingoCardPlacement[]>>] | null
@@ -59,5 +60,5 @@ export type BingoCardPlacement = Position & {
 };
 
 export const CardsProvider: React.FC<PropsWithChildren> = ({ children }) => {
-  return <CardsContext.Provider value={useState<BingoCardPlacement[]>([])}>{children}</CardsContext.Provider>;
+  return <CardsContext.Provider value={useClientState('cards', [])}>{children}</CardsContext.Provider>;
 };

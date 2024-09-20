@@ -1,4 +1,4 @@
-import { useLocation, createBrowserRouter, type RouteObject, BrowserRouter } from 'react-router-dom';
+import { createBrowserRouter, type RouteObject, BrowserRouter } from 'react-router-dom';
 import { Layout } from '../layouts/Mobile';
 import { DownloadTab } from '../pages/DownloadTab';
 import { PreviewTab } from '../pages/PreviewTab';
@@ -6,28 +6,20 @@ import { UploadTab } from '../pages/UploadTab';
 import type { PropsWithChildren } from 'react';
 import { RouterProvider as ReactDomRouterProvider } from 'react-router-dom';
 import { CreateTab } from '../pages/CreateTab';
+import { useRoute } from '../hooks/useRoute';
+import { CHILD_ROUTES, STARTING_ROUTE, type Route } from '../const/route';
 
-const ROUTES = ['/upload', '/create', '/preview', '/download'] as const;
-export type Route = (typeof ROUTES)[number];
-function assertIsRoute(route: string): asserts route is Route {
-  if (route === '/') return;
-
-  if (!ROUTES.includes(route as Route)) {
-    throw new Error(`Invalid route: ${route}`);
-  }
-}
-
-const STARTING_ROUTE = ROUTES[0];
 export const useLeftRightNavigation = () => {
-  const location = useLocation();
+  const route = useRoute();
 
-  const route = location.pathname;
-  assertIsRoute(route);
+  if (route === '/') {
+    return { prev: undefined, next: STARTING_ROUTE };
+  }
 
-  const pathIdx = ROUTES.indexOf(route);
+  const pathIdx = CHILD_ROUTES.indexOf(route);
 
-  const prev = ROUTES[pathIdx - 1];
-  const next = ROUTES[pathIdx + 1];
+  const prev = CHILD_ROUTES[pathIdx - 1];
+  const next = CHILD_ROUTES[pathIdx + 1];
 
   return { prev, next };
 };
@@ -37,13 +29,13 @@ const ROUTE_ELEMENT_MAP = {
   '/create': <CreateTab />,
   '/preview': <PreviewTab />,
   '/download': <DownloadTab />,
-} as const satisfies Record<Route, JSX.Element>;
+} as const satisfies Record<Exclude<Route, '/'>, JSX.Element>;
 
 const router = createBrowserRouter([
   {
     path: '/',
     Component: Layout,
-    children: ROUTES.map<RouteObject>((path) => ({
+    children: CHILD_ROUTES.map<RouteObject>((path) => ({
       path,
       index: path === STARTING_ROUTE,
       element: ROUTE_ELEMENT_MAP[path],

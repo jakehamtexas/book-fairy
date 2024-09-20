@@ -1,7 +1,12 @@
-import { ThemeProvider as BaseThemeProvider, ColorModeProvider } from '@chakra-ui/react';
+import { ThemeProvider as BaseThemeProvider, ColorModeProvider, type Theme } from '@chakra-ui/react';
 import type { PropsWithChildren } from 'react';
 
-const THEME = {};
+// TODO: wtf
+const THEME: Partial<Theme> = {
+  colors: {
+    white: '#000',
+  } as Theme['colors'],
+};
 
 export const ThemeProvider: React.FC<PropsWithChildren> = ({ children }) => {
   return (

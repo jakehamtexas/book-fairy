@@ -1,30 +1,29 @@
 import { useLocalStorage } from '@uidotdev/usehooks';
+import type { BingoCardPlacement } from '../providers/Cards';
 
-const STATE_KEYS = ['cards'] as const satisfies string[];
-
-type StateKey = (typeof STATE_KEYS)[number];
-
-type CardDesignState = {
-  topPx: number;
-  leftPx: number;
-  widthPx: number;
-  heightPx: number;
+type ClientStateValueMap = {
+  cards: BingoCardPlacement[];
+  bgImgSrc: string;
 };
 
-type ClientStateValue<TStateKey extends StateKey> = {
-  cards: CardDesignState[];
-}[TStateKey];
+type StateKey = keyof ClientStateValueMap;
 
-type ClientState<TStateKey extends StateKey> = [
-  ClientStateValue<TStateKey>,
-  React.Dispatch<React.SetStateAction<ClientStateValue<TStateKey>>>,
-];
+type ClientStateValue<TStateKey extends StateKey> = ClientStateValueMap[TStateKey];
 
-export const useClientState = <TStateKey extends StateKey>(
+type ClientState<T> = [T, React.Dispatch<React.SetStateAction<T>>];
+
+export function useClientState<TStateKey extends StateKey>(
+  key: TStateKey,
+): ClientState<ClientStateValue<TStateKey> | undefined>;
+export function useClientState<TStateKey extends StateKey>(
+  key: TStateKey,
+  initial: ClientStateValue<TStateKey>,
+): ClientState<ClientStateValue<TStateKey>>;
+export function useClientState<TStateKey extends StateKey>(
   key: TStateKey,
   initial?: ClientStateValue<TStateKey>,
-): ClientState<TStateKey> => {
+): ClientState<ClientStateValue<TStateKey> | undefined> {
   const [v, setV] = useLocalStorage(key, initial);
 
-  return [v, setV];
-};
+  return [v, setV] as ClientState<ClientStateValue<TStateKey> | undefined>;
+}
