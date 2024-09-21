@@ -1,4 +1,4 @@
-export const CHILD_ROUTES = ['/upload', '/create', '/preview', '/download'] as const;
+export const CHILD_ROUTES = ['/upload', '/create', '/preview'] as const;
 
 type ChildRoute = (typeof CHILD_ROUTES)[number];
 export type Route = ChildRoute | '/';

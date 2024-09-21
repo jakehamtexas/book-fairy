@@ -1,8 +1,8 @@
 import { useLocalStorage } from '@uidotdev/usehooks';
-import type { BingoCardPlacement } from '../providers/Cards';
+import type { BingoCardInfo } from '../providers/Cards';
 
 type ClientStateValueMap = {
-  cards: BingoCardPlacement[];
+  cards: BingoCardInfo[];
   bgImgSrc: string;
 };
 

@@ -1,6 +1,5 @@
 import { createBrowserRouter, type RouteObject, BrowserRouter } from 'react-router-dom';
 import { Layout } from '../layouts/Mobile';
-import { DownloadTab } from '../pages/DownloadTab';
 import { PreviewTab } from '../pages/PreviewTab';
 import { UploadTab } from '../pages/UploadTab';
 import type { PropsWithChildren } from 'react';
@@ -24,11 +23,10 @@ export const useLeftRightNavigation = () => {
   return { prev, next };
 };
 
-const ROUTE_ELEMENT_MAP = {
+const CHILD_ROUTE_ELEMENT_MAP = {
   '/upload': <UploadTab />,
   '/create': <CreateTab />,
   '/preview': <PreviewTab />,
-  '/download': <DownloadTab />,
 } as const satisfies Record<Exclude<Route, '/'>, JSX.Element>;
 
 const router = createBrowserRouter([
@@ -38,7 +36,7 @@ const router = createBrowserRouter([
     children: CHILD_ROUTES.map<RouteObject>((path) => ({
       path,
       index: path === STARTING_ROUTE,
-      element: ROUTE_ELEMENT_MAP[path],
+      element: CHILD_ROUTE_ELEMENT_MAP[path],
     })),
   },
 ]);

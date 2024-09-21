@@ -6,10 +6,14 @@ import {
 import { createContext, type Dispatch, type PropsWithChildren, type SetStateAction, useContext } from 'react';
 import { calculateScale, ORIGINAL_SIZE } from '../lib/scale';
 import { useClientState } from '../hooks/useClientState';
+import { getBingoCellValues } from '../lib/bingo';
 
-export const CardsContext = createContext<
-  [BingoCardPlacement[], Dispatch<SetStateAction<BingoCardPlacement[]>>] | null
->(null);
+export type BingoCardInfo = {
+  placement: BingoCardPlacement;
+  cells: string[][];
+};
+
+export const CardsContext = createContext<[BingoCardInfo[], Dispatch<SetStateAction<BingoCardInfo[]>>] | null>(null);
 const useCardsContext = () => {
   const context = useContext(CardsContext);
 
@@ -29,9 +33,12 @@ export const useCards = () => {
       setCards((prev) => {
         const newScale = calculateScale(ORIGINAL_SIZE, size);
 
-        return prev.map<BingoCardPlacement>((box, i) => ({
-          ...(i === idx ? { ...box, x, y } : box),
-          scale: newScale,
+        return prev.map<BingoCardInfo>((info, i) => ({
+          placement: {
+            ...(i === idx ? { ...info.placement, x, y } : info.placement),
+            scale: newScale,
+          },
+          cells: info.cells,
         }));
       });
     };
@@ -41,14 +48,18 @@ export const useCards = () => {
   };
 
   const addCard = () => {
-    const scale = cards[0]?.scale ?? 1;
+    const scale = cards[0]?.placement.scale ?? 1;
+    const cells = getBingoCellValues();
     setCards((prev) => [
       ...prev,
       {
-        x: 100,
-        y: 100,
-        scale,
-      },
+        cells,
+        placement: {
+          x: 100,
+          y: 100,
+          scale,
+        },
+      } satisfies BingoCardInfo,
     ]);
   };
 

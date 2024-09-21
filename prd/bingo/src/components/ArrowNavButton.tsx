@@ -3,13 +3,10 @@ import { useLeftRightNavigation } from '../providers/Router';
 import type { Route } from '../const/route';
 import { ArrowLeft, ArrowRight, type Icon } from 'react-feather';
 import styled from '@emotion/styled';
-import { Button } from '@chakra-ui/react';
+import { ButtonIcon } from './ButtonIcon';
 
-const ArrowButton = styled(Button)`
-  display: inline-block;
-  vertical-align: middle;
+const ArrowButtonIcon = styled(ButtonIcon)`
   background: #fff;
-  cursor: pointer;
   padding: 10px 20px;
 `;
 
@@ -31,9 +28,7 @@ export const ArrowNavButton: React.FC<{ left: true; right?: never } | { left?: n
 
   return (
     <Link to={route}>
-      <ArrowButton>
-        <Icon />
-      </ArrowButton>
+      <ArrowButtonIcon Icon={Icon} />
     </Link>
   );
 };

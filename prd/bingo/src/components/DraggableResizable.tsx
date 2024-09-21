@@ -14,15 +14,27 @@ export type Size = {
 export type BoundingBox = Position & Size;
 
 export const DraggableResizable: React.FC<
-  PropsWithChildren<{
-    box: BoundingBox;
-    onChange: (next: BoundingBox) => void;
-    className?: string;
-  }>
-> = ({ children, box, onChange, className }) => {
+  PropsWithChildren<
+    | {
+        box: BoundingBox;
+        onChange: (next: BoundingBox) => void;
+        className?: string;
+        showMode?: never;
+      }
+    | {
+        showMode: true;
+        box: BoundingBox;
+        onChange?: never;
+        className?: string;
+      }
+  >
+> = ({ children, box, onChange, className, showMode }) => {
   function handleChanged(newPosition: Position): void;
   function handleChanged(newSize: Size): void;
   function handleChanged(newBox: Partial<BoundingBox>) {
+    if (!onChange) {
+      return undefined;
+    }
     const next = {
       x: newBox?.x ?? box.x,
       y: newBox?.y ?? box.y,
@@ -33,22 +45,24 @@ export const DraggableResizable: React.FC<
     onChange(next);
   }
 
+  const enableResizingBase = {
+    top: false,
+    left: false,
+    topRight: false,
+    bottomLeft: false,
+    topLeft: false,
+  };
+
+  const enableResizing = showMode
+    ? { ...enableResizingBase, right: true, bottom: true, bottomRight: true }
+    : { ...enableResizingBase, right: false, bottom: false, bottomRight: false };
+
   return (
     <Rnd
       {...(className ? { className } : undefined)}
       position={box}
       size={box}
-      enableResizing={{
-        right: true,
-        bottom: true,
-        bottomRight: true,
-
-        top: false,
-        left: false,
-        topRight: false,
-        bottomLeft: false,
-        topLeft: false,
-      }}
+      enableResizing={enableResizing}
       onDragStop={(_e, state) => {
         handleChanged(state);
       }}
