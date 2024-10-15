@@ -3315,6 +3315,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"client-zip@npm:2.4.5":
+  version: 2.4.5
+  resolution: "client-zip@npm:2.4.5"
+  checksum: 10c0/b3ec15c8487575a992f86ced6f66a9905ef1955675e431bbe1a74e780448fff284904b2c9565678f97e31ae4f2b128fbc55f84af1b5a89f3d52c9225b8d7c14a
+  languageName: node
+  linkType: hard
+
 "cliui@npm:^8.0.1":
   version: 8.0.1
   resolution: "cliui@npm:8.0.1"
@@ -4305,6 +4312,13 @@ __metadata:
   version: 2.0.2
   resolution: "html-escaper@npm:2.0.2"
   checksum: 10c0/208e8a12de1a6569edbb14544f4567e6ce8ecc30b9394fcaa4e7bb1e60c12a7c9a1ed27e31290817157e8626f3a4f29e76c8747030822eb84a6abb15c255f0a0
+  languageName: node
+  linkType: hard
+
+"html-to-image@npm:1.11.11":
+  version: 1.11.11
+  resolution: "html-to-image@npm:1.11.11"
+  checksum: 10c0/0b6349221ad253dfca01d165c589d44341e942faf0273aab28c8b7d86ff2922d3e8e6390f57bf5ddaf6bac9a3b590a8cdaa77d52a363354796dd0e0e05eb35d2
   languageName: node
   linkType: hard
 
@@ -5438,15 +5452,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mprocs@npm:0.7.1":
-  version: 0.7.1
-  resolution: "mprocs@npm:0.7.1"
-  bin:
-    mprocs: cli.js
-  checksum: 10c0/ab4ac776e17c4dbcf1ebb4a48b5f77c560f17979d3a5d934d63135c7eaee9beba0ff365e79e36eb45faa2b18d4098a3a1c6fd7c06da0b9429a4880656b9ee994
-  languageName: node
-  linkType: hard
-
 "ms@npm:^2.1.3":
   version: 2.1.3
   resolution: "ms@npm:2.1.3"
@@ -5759,8 +5764,10 @@ __metadata:
     "@types/react": "npm:18.3.5"
     "@types/react-dom": "npm:18.3.0"
     "@uidotdev/usehooks": "npm:2.4.1"
+    client-zip: "npm:2.4.5"
     esbuild: "npm:0.23.1"
     framer-motion: "npm:11.5.4"
+    html-to-image: "npm:1.11.11"
     react: "npm:18.3.1"
     react-dom: "npm:18.3.1"
     react-feather: "npm:2.0.10"
@@ -6605,7 +6612,6 @@ __metadata:
     eslint-plugin-unicorn: "npm:55.0.0"
     globals: "npm:15.9.0"
     jest: "npm:29.7.0"
-    mprocs: "npm:0.7.1"
     prettier: "npm:3.3.3"
     tsx: "npm:4.19.1"
     typescript: "npm:5.5.4"

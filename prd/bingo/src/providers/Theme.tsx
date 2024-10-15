@@ -1,17 +1,35 @@
-import { ThemeProvider as BaseThemeProvider, ColorModeProvider, type Theme } from '@chakra-ui/react';
+import {
+  ChakraProvider,
+  ThemeProvider as BaseThemeProvider,
+  ColorModeProvider,
+  type Theme,
+  theme as chakraTheme,
+  extendBaseTheme,
+  type DeepPartial,
+} from '@chakra-ui/react';
 import type { PropsWithChildren } from 'react';
 
-// TODO: wtf
-const THEME: Partial<Theme> = {
-  colors: {
-    white: '#000',
-  } as Theme['colors'],
+const white = '#fff';
+const black = '#000';
+
+const overrideTheme: DeepPartial<Theme> = {
+  styles: {
+    global: {
+      body: {
+        color: black,
+      },
+    },
+  },
 };
+
+const THEME: Partial<Theme> = extendBaseTheme(chakraTheme, overrideTheme);
 
 export const ThemeProvider: React.FC<PropsWithChildren> = ({ children }) => {
   return (
-    <BaseThemeProvider theme={THEME}>
-      <ColorModeProvider>{children}</ColorModeProvider>
-    </BaseThemeProvider>
+    <ChakraProvider>
+      <BaseThemeProvider theme={THEME}>
+        <ColorModeProvider>{children}</ColorModeProvider>
+      </BaseThemeProvider>
+    </ChakraProvider>
   );
 };

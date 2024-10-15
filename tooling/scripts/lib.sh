@@ -62,6 +62,15 @@ cd_project_cwd() {
 }
 
 get_tooling_bin_path() {
+	local tooling_nix_result_bin_path
+	tooling_nix_result_bin_path="$(get_project_cwd)/tooling/result/bin"
+
+	if test -s "${tooling_nix_result_bin_path}/${1}"; then
+		echo "${tooling_nix_result_bin_path}/${1}"
+
+		return
+	fi
+
 	local bin
 	bin="$(yarn workspace tooling bin "$1")"
 

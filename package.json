@@ -19,6 +19,8 @@
     "node": "22.8.0"
   },
   "scripts": {
-    "mprocs": "yarn tooling:mprocs"
+    "mprocs": "yarn tooling:mprocs",
+    "build": "yarn workspaces foreach -A run nix-build",
+    "postinstall": "yarn run build"
   }
 }

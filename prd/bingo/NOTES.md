@@ -42,14 +42,14 @@
 
 ### Generate A Bingo Card Preview .png
 
-- [ ] Show a preview of the bingo card in the preview area
-- [ ] It should be downloadable as a .png
+- [x] Show a preview of the bingo card in the preview area
+- [x] It should be downloadable as a .png
 
 ### Bulk Download
 
 - [ ] Download all bingo cards as a .zip
 - [ ] Specify number of bingo cards to download
-- [ ] All cards should be unique
+- [x] All cards should be unique
 
 ### (Consider) OAuth flow for Google Drive API
 

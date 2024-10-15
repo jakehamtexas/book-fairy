@@ -11,7 +11,7 @@ const HiddenInput = styled(Input)`
 `;
 
 export const UploadBackgroundImageInput = () => {
-  const { fileUrl, setFile } = useBackgroundImage();
+  const { fileUrl, setFileUrl } = useBackgroundImage();
   const ref = useRef<HTMLInputElement>(null);
 
   const onClick = () => {
@@ -31,7 +31,11 @@ export const UploadBackgroundImageInput = () => {
         name="myImage"
         onChange={(event) => {
           const file = event.target.files?.[0];
-          setFile(file);
+          if (!file) {
+            throw new Error('Expected a file');
+          }
+
+          setFileUrl(file);
         }}
       />
       <CenteredButtonMask onClick={onClick} icon={'add'}>

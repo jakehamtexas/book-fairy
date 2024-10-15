@@ -5,6 +5,8 @@ import { FREE_SPACE_TEXT } from '../const/bingo';
 const BingoGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(5, 1fr);
+  background-color: #ffffffff;
+  border: ${getBorderOption('heavy')};
 `;
 
 const WIDTH_HEIGHT_PX = 50;
@@ -44,7 +46,7 @@ function getBorderOption(opt: BorderOption | undefined): string {
 
 const FreeSpaceCell = styled.div<{ $scale: number }>`
   ${({ $scale }) => css`
-    font-size: ${$scale * 0.5}rem;
+    font-size: ${$scale * 0.8}rem;
     border-right: ${getBorderOption('light')};
     border-bottom: ${getBorderOption('light')};
     font-weight: bold;
@@ -64,6 +66,7 @@ const NumberCell = styled.div<{ $scale: number }>`
   font-size: ${$scale}rem;
   border-bottom: 1px solid black;
   border-right: 1px solid black;
+    font-weight: bold;
 
   :last-child {
     border-bottom: none;

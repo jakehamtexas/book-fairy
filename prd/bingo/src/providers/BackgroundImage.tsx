@@ -1,9 +1,8 @@
 import React, { useContext, useState, type Dispatch, type PropsWithChildren, type SetStateAction } from 'react';
 import { createContext } from 'react';
+import { useImage, type ImageProviderProps } from '../hooks/useImage';
 
-type BackgroundImageProviderProps = [file: File | undefined, setImage: Dispatch<SetStateAction<File | undefined>>];
-
-const BackgroundImageContext = createContext<BackgroundImageProviderProps | undefined>(undefined);
+const BackgroundImageContext = createContext<ImageProviderProps | undefined>(undefined);
 
 function useBackgroundImageContext() {
   const context = useContext(BackgroundImageContext);
@@ -15,18 +14,13 @@ function useBackgroundImageContext() {
   return context;
 }
 
-export type BackgroundImageState = {
-  fileUrl: string;
-  setFile: Dispatch<SetStateAction<File | undefined>>;
-};
-
 export function useBackgroundImage() {
-  const [file, setFile] = useBackgroundImageContext();
-  const fileUrl = file ? URL.createObjectURL(file) : undefined;
+  const backgroundImageContext = useBackgroundImageContext();
+  const { imageUrl, setImageUrl } = useImage(backgroundImageContext);
 
   return {
-    fileUrl,
-    setFile,
+    fileUrl: imageUrl,
+    setFileUrl: setImageUrl,
   };
 }
 
