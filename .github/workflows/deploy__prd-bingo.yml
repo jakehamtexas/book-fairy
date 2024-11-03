@@ -1,0 +1,149 @@
+name: Deploy prd-bingo
+on:
+  workflow_call:
+    inputs:
+      env:
+        description: Which env to deploy to.
+        type: string
+  workflow_dispatch:
+    inputs:
+      env:
+        description: Which env to deploy to.
+        type: choice
+        options:
+          - dev
+          - prod
+        default: dev
+
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: true
+
+jobs:
+  terraform:
+    runs-on: ubuntu-24.04
+    name: Terraform
+    environment:
+      name: ${{ inputs.env }}
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+    outputs:
+      deploy_wif_provider: ${{ steps.apply.outputs.deploy_wif_provider }}
+      deploy_sa: ${{ steps.apply.outputs.deploy_sa }}
+      static_hosting_bucket_address: ${{ steps.apply.outputs.prd_bingo_static_hosting_bucket_address }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - uses: ./.github/actions/setup-nix
+        with:
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: google-github-actions/auth@6fc4af4b145ae7821d527454aa9bd537d1f2dc5f # v2.1.7
+        id: terraform-google-auth
+        with:
+          workload_identity_provider: ${{ vars.ADMIN_TF_WIF_PROVIDER }}
+          service_account: ${{ vars.ADMIN_TF_SA }}
+      - name: Terraform Plan/Apply
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ steps.terraform-google-auth.outputs.credentials_file_path }}
+        run: |
+          set -euo pipefail
+
+          terraform() {
+            nix develop '.#ci' --command terraform "${@}"
+          }
+
+          terraform_plan_apply() {
+            local plan_file
+            plan_file="$(mktemp)"
+
+            terraform -chdir="${CHDIR}" init -backend-config=../backend-config.hcl
+
+            terraform \
+              -chdir="${CHDIR}" \
+              plan \
+              -var-file=../../global.tfvars \
+              -input=false \
+              -out="${plan_file}" 1>&2
+
+            terraform \
+              -chdir="${CHDIR}" \
+              apply \
+              -auto-approve \
+              -input=false \
+              "${plan_file}" 1>&2
+            
+            echo "${plan_file}"
+          }
+
+          terraform_output_raw() {
+            terraform \
+              -chdir="${CHDIR}" \
+              output \
+              -raw \
+              "${@}"
+          }
+
+          CHDIR=terraform/dev/bingo-app terraform_plan_apply
+          static_hosting_bucket_address="$(
+            CHDIR=terraform/dev/bingo-app \
+              terraform_output_raw \
+              bucket_url
+          )"
+
+          deploy_wif_provider="$(
+            CHDIR=terraform/dev/bingo-app \
+              terraform_output_raw \
+              deploy_wif_provider
+          )"
+          deploy_sa="$(
+            CHDIR=terraform/dev/bingo-app \
+              terraform_output_raw \
+              deploy_sa
+          )"
+
+          {
+            echo "deploy_wif_provider=${deploy_wif_provider}"
+            echo "deploy_sa=${deploy_sa}"
+            echo "static_hosting_bucket_address=${static_hosting_bucket_address}"
+          } >>"${GITHUB_OUTPUT}"
+
+  build_deploy:
+    runs-on: ubuntu-24.04
+    name: Build/Deploy
+    needs: [terraform]
+    environment:
+      name: ${{ inputs.env }}
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - uses: ./.github/actions/setup-nix
+        with:
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build
+        run: |
+          set -euo pipefail
+
+          yarn() {
+            nix develop '.#ci' --command yarn "${@}"
+          }
+
+          yarn
+          yarn workspaces focus prd-bingo
+          yarn workspace prd-bingo run build
+      - uses: google-github-actions/auth@6fc4af4b145ae7821d527454aa9bd537d1f2dc5f # v2.1.7
+        with:
+          workload_identity_provider: ${{ needs.terraform.outputs.deploy_wif_provider }}
+          service_account: ${{ needs.terraform.outputs.deploy_sa }}
+      - name: Deploy
+        run: |
+          set -euo pipefail
+
+          gcloud() {
+            nix develop '#.ci' --command gcloud "${@}"
+          }
+
+          gcloud storage cp --recursive prd/bingo/public "${BUCKET}"
+        env:
+          BUCKET: ${{ needs.terraform.outputs.static_hosting_bucket_address }}

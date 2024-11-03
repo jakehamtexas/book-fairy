@@ -6542,6 +6542,12 @@ __metadata:
   languageName: node
   linkType: hard
 
+"terraform@workspace:terraform":
+  version: 0.0.0-use.local
+  resolution: "terraform@workspace:terraform"
+  languageName: unknown
+  linkType: soft
+
 "test-exclude@npm:^6.0.0":
   version: 6.0.0
   resolution: "test-exclude@npm:6.0.0"

@@ -1,5 +1,5 @@
 {
-  description = "tools";
+  description = "terraform";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
@@ -19,19 +19,9 @@
           config.allowUnfree = true;
         };
       in {
-        packages = {
-          all = pkgs.symlinkJoin {
-            name = "all";
-            paths = [
-              pkgs.doppler
-              pkgs.mprocs
-              pkgs.terraform
-              pkgs.google-cloud-sdk
-            ];
-          };
-        };
+        packages.terraform = pkgs.terraform;
 
-        packages.default = self.packages.${system}.all;
+        packages.default = pkgs.terraform;
       }
     );
 }

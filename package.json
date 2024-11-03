@@ -13,14 +13,10 @@
     "prd/*",
     "lib/*",
     "dev/*",
-    "tooling"
+    "tooling",
+    "terraform"
   ],
   "engines": {
-    "node": "22.8.0"
-  },
-  "scripts": {
-    "mprocs": "yarn tooling:mprocs",
-    "build": "yarn workspaces foreach -A run nix-build",
-    "postinstall": "yarn run build"
+    "node": "22.10.0"
   }
 }

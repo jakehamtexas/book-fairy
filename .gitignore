@@ -3,3 +3,4 @@ dist
 mprocs.log
 *.tsbuildinfo
 .terraform
+result

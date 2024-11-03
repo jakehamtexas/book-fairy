@@ -15,11 +15,9 @@
     "tooling:lint": "./scripts/lint.sh",
     "tooling:mprocs": "./scripts/mprocs.sh",
     "tooling:test": "./scripts/test.sh",
-    "tooling:terraform": "./scripts/terraform.sh",
     "lint": "yarn tooling:lint",
     "format": "yarn tooling:format",
-    "build": "yarn tooling:build",
-    "nix-build": "nix build ."
+    "build": "yarn tooling:build"
   },
   "dependencies": {
     "@eslint/js": "9.10.0",

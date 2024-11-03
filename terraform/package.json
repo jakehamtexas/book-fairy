@@ -1,0 +1,8 @@
+{
+  "name": "terraform",
+  "type": "module",
+  "scripts": {
+    "deploy:image-state": "nix run .#terraform -- deploy-image-state",
+    "deploy:bingo-app": "nix run .#terraform -- deploy-image-state"
+  }
+}

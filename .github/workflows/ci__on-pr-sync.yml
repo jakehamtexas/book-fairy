@@ -1,0 +1,15 @@
+name: CI
+on:
+  pull_request:
+  push:
+    branches:
+      - 'main'
+
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Test - Nix
+    uses: ./.github/workflows/test__nix.yml
